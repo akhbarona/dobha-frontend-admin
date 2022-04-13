@@ -95,6 +95,10 @@ table th {
 tbody td {
   font-weight: 500;
 }
+tbody td p {
+  padding: 0 !important;
+  margin: 0 !important;
+}
 tbody td:nth-child(1) {
   text-align: center;
 }

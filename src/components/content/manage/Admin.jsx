@@ -15,14 +15,14 @@ const Admin = () => {
 
   const [getDataAdmin, setGetDataAdmin] = useState([]);
 
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   // console.log(getDataAdmin);
   const navigate = useNavigate();
   useEffect(() => {
     getAdmin();
   }, []);
   const getAdmin = () => {
-    setLoading(true);
+    // setLoading(true);
     GetService.getAllAdmin().then(
       (res) => {
         const newData = res.map((item, index) => {
@@ -31,7 +31,7 @@ const Admin = () => {
         });
         // console.log(newData);
         setGetDataAdmin(newData);
-        setLoading(false);
+        // setLoading(false);
       },
       (error) => {
         if (error.response && error.response.status === 403) {
@@ -55,7 +55,8 @@ const Admin = () => {
             showConfirmButton: false,
             timer: 1500,
           });
-          setGetDataAdmin([...getDataAdmin, res]);
+          getAdmin();
+          // setGetDataAdmin([...getDataAdmin, newData]);
           // setLoading(false);
           setPassword('');
           setUsername('');
@@ -91,7 +92,7 @@ const Admin = () => {
         const onDelete = async () => {
           await AuthService.deleteAdmin(username)
             .then((res) => {
-              setGetDataAdmin(getDataAdmin.filter((p) => p.username !== username));
+              // setGetDataAdmin(getDataAdmin.filter((p) => p.username !== username));
               Swal.fire('Deleted', `Admin Berhasil Dihapus ${res}`, 'success');
               getAdmin();
             })
@@ -182,9 +183,7 @@ const Admin = () => {
             </Button>
           </Form>
         </div>
-        {loading ? (
-          <p className="py-3 px-0 text-center m-0">Loading...</p>
-        ) : getDataAdmin.length > 0 ? (
+        {getDataAdmin.length > 0 ? (
           <div className="my-3 table-container">
             <table {...getTableProps()}>
               <thead>

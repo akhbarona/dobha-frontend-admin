@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Col } from 'react-bootstrap';
+import { Col, Placeholder } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import authHeader from '../../services/auth.header';
 import AuthService from '../../services/auth.service';
 
 const Main = () => {
-  const [total, setTotal] = useState();
-  console.log(total);
+  const [total, setTotal] = useState(null);
+  const navigate = useNavigate();
   useEffect(() => {
     const getTotal = async () => {
       await axios
@@ -20,10 +21,20 @@ const Main = () => {
 
   useEffect(() => {
     const user = AuthService.getCurrentUser();
-    if (user) {
-      setCurrentUser(user);
-    }
+
+    setCurrentUser(user);
+    const timeout = setTimeout(() => {
+      console.log('session berakhir');
+      AuthService.logout();
+      navigate('/');
+    }, user.expired_token);
   }, []);
+  // useEffect(() => {
+  //   const timerId = timeout(currentUser.expired_token);
+  //   return () => {
+  //     clearTimeout(timerId);
+  //   };
+  // }, []);
 
   return (
     <div className="container-fluid height-container">
@@ -35,7 +46,15 @@ const Main = () => {
                 <i className="fa-solid fa-box fa-3x"></i>
               </div>
               <div className="tile-right">
-                <div className="tile-number">{total && total.total_produk}</div>
+                <div className="tile-number">
+                  {total !== null ? (
+                    total.total_produk
+                  ) : (
+                    <Placeholder as="span" animation="glow">
+                      <Placeholder xs={7} />
+                    </Placeholder>
+                  )}
+                </div>
                 <div className="tile-description">Total Produk</div>
               </div>
             </div>
@@ -48,7 +67,15 @@ const Main = () => {
                 <i className="fa-solid fa-newspaper fa-3x"></i>
               </div>
               <div className="tile-right">
-                <div className="tile-number">{total && total.total_article}</div>
+                <div className="tile-number">
+                  {total !== null ? (
+                    total.total_article
+                  ) : (
+                    <Placeholder as="span" animation="glow">
+                      <Placeholder xs={7} />
+                    </Placeholder>
+                  )}
+                </div>
                 <div className="tile-description">Total Artikel</div>
               </div>
             </div>
@@ -62,7 +89,15 @@ const Main = () => {
                   <i className="fa-solid fa-users fa-3x"></i>
                 </div>
                 <div className="tile-right">
-                  <div className="tile-number">{total && total.total_admin}</div>
+                  <div className="tile-number">
+                    {total !== null ? (
+                      total.total_admin
+                    ) : (
+                      <Placeholder as="span" animation="glow">
+                        <Placeholder xs={7} />
+                      </Placeholder>
+                    )}
+                  </div>
                   <div className="tile-description">Total Admin</div>
                 </div>
               </div>

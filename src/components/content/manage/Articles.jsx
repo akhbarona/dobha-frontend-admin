@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Button, Container, FormControl, InputGroup, Row } from 'react-bootstrap';
+import { Button, Container, FormControl, InputGroup, Row, Spinner } from 'react-bootstrap';
 import AuthService from '../../services/auth.service';
 import GetService from '../../services/get.service';
 import { useNavigate } from 'react-router-dom';
 import { useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
 import Swal from 'sweetalert2';
+import parse from 'html-react-parser';
 
 const Articles = () => {
   const [loading, setLoading] = useState(true);
@@ -82,7 +83,7 @@ const Articles = () => {
       Header: 'Isi Artikel',
       accessor: 'excerpt',
       Cell: ({ value }) => {
-        return handleLength(value, 40);
+        return parse(handleLength(value, 40));
       },
     },
     {
@@ -90,14 +91,18 @@ const Articles = () => {
       accessor: 'published',
     },
     {
+      Header: 'Updated',
+      accessor: 'updated',
+    },
+    {
       Header: 'Action',
       accessor: 'action',
       Cell: (row) => (
-        <div className="d-flex d-flex justify-content-around">
-          <button className="btn w-45 btn-warning" onClick={() => navigate(`/create-article/${row.row.original.slug}`)}>
+        <div className="d-flex d-flex justify-content-between">
+          <button className="btn btn-warning" onClick={() => navigate(`/create-article/${row.row.original.slug}`)}>
             Update
           </button>
-          <button className="btn w-45  btn-danger" onClick={() => handleDelete(row.row.original.slug)}>
+          <button className="btn  btn-danger" onClick={() => handleDelete(row.row.original.slug)}>
             Delete
           </button>
         </div>
@@ -120,91 +125,94 @@ const Articles = () => {
 
   return (
     <Container fluid>
-      <Row className="justify-content-between">
-        <Button className="w-25" variant="primary" onClick={() => navigate('/create-article')}>
-          Tambah Artikel
-        </Button>
-        <InputGroup className="w-50">
-          <InputGroup.Text id="basic-addon1">
-            <i className="fas fa-search"></i>
-          </InputGroup.Text>
-          <FormControl placeholder="Pencarian..." aria-label="Searching" value={globalFilter || ''} onChange={(e) => setGlobalFilter(e.target.value)} />
-        </InputGroup>
-      </Row>
-
       <Row>
         {loading ? (
-          <p className="py-3 px-0 text-center m-0">Loading...</p>
-        ) : getDataArticle.length > 0 ? (
-          <div className="my-3 table-container p-0">
-            <table {...getTableProps()}>
-              <thead>
-                {headerGroups.map((headerGroup) => (
-                  <tr {...headerGroup.getHeaderGroupProps()}>
-                    {headerGroup.headers.map((column) => (
-                      <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                        {column.render('Header')}
-                        <span>
-                          {column.isSorted ? (
-                            column.isSortedDesc ? (
-                              <svg className="th-align-left" focusable="false" xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
-                              </svg>
-                            ) : (
-                              <svg className="th-align-right" focusable="false" xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
-                                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
-                              </svg>
-                            )
-                          ) : (
-                            ''
-                          )}
-                        </span>
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody {...getTableBodyProps()}>
-                {page.map((row) => {
-                  prepareRow(row);
-                  return (
-                    <tr {...row.getRowProps()}>
-                      {row.cells.map((cell) => {
-                        return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
-                      })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-            <div className="py-3">
-              <span>
-                Page{' '}
-                <strong>
-                  {pageIndex + 1} dari {pageOptions.length}{' '}
-                </strong>
-              </span>
-              <select value={pageSize} onChange={(e) => setPageSize(Number(e.target.value))}>
-                {[10, 20, 50].map((pageSize) => (
-                  <option value={pageSize} key={pageSize}>
-                    Show {pageSize}
-                  </option>
-                ))}
-              </select>
-              <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-                {'<<'}
-              </button>
-              <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-                Previous
-              </button>
-              <button onClick={() => nextPage()} disabled={!canNextPage}>
-                Next
-              </button>
-              <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-                {'>>'}
-              </button>
-            </div>
+          <div className="py-3 px-0 text-center m-0">
+            <Spinner animation="grow" variant="info" />
           </div>
+        ) : getDataArticle.length > 0 ? (
+          <>
+            <Row className="justify-content-between">
+              <Button className="w-25" variant="primary" onClick={() => navigate('/create-article')}>
+                Tambah Artikel
+              </Button>
+              <InputGroup className="w-50">
+                <InputGroup.Text id="basic-addon1">
+                  <i className="fas fa-search"></i>
+                </InputGroup.Text>
+                <FormControl placeholder="Pencarian..." aria-label="Searching" value={globalFilter || ''} onChange={(e) => setGlobalFilter(e.target.value)} />
+              </InputGroup>
+            </Row>
+            <div className="my-3 table-container p-0">
+              <table {...getTableProps()}>
+                <thead>
+                  {headerGroups.map((headerGroup) => (
+                    <tr {...headerGroup.getHeaderGroupProps()}>
+                      {headerGroup.headers.map((column) => (
+                        <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                          {column.render('Header')}
+                          <span>
+                            {column.isSorted ? (
+                              column.isSortedDesc ? (
+                                <svg className="th-align-left" focusable="false" xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                                  <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                                </svg>
+                              ) : (
+                                <svg className="th-align-right" focusable="false" xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                                  <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+                                </svg>
+                              )
+                            ) : (
+                              ''
+                            )}
+                          </span>
+                        </th>
+                      ))}
+                    </tr>
+                  ))}
+                </thead>
+                <tbody {...getTableBodyProps()}>
+                  {page.map((row) => {
+                    prepareRow(row);
+                    return (
+                      <tr {...row.getRowProps()}>
+                        {row.cells.map((cell) => {
+                          return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
+                        })}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+              <div className="py-3">
+                <span>
+                  Page{' '}
+                  <strong>
+                    {pageIndex + 1} dari {pageOptions.length}{' '}
+                  </strong>
+                </span>
+                <select value={pageSize} onChange={(e) => setPageSize(Number(e.target.value))}>
+                  {[10, 20, 50].map((pageSize) => (
+                    <option value={pageSize} key={pageSize}>
+                      Show {pageSize}
+                    </option>
+                  ))}
+                </select>
+                <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+                  {'<<'}
+                </button>
+                <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+                  Previous
+                </button>
+                <button onClick={() => nextPage()} disabled={!canNextPage}>
+                  Next
+                </button>
+                <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+                  {'>>'}
+                </button>
+              </div>
+            </div>
+          </>
         ) : (
           <div className="py-3">
             <p className="text-center">Tidak ada data Article</p>
