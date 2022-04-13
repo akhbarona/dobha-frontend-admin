@@ -1,0 +1,127 @@
+/* Login Admin */
+.login-wrapper {
+  height: 100vh;
+  width: 100%;
+  margin: auto;
+}
+.body-login {
+  display: flex;
+  background-color: #fffff5;
+  height: 100%;
+}
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+
+.form-signin .checkbox {
+  font-weight: 400;
+}
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-signin input[type='email'] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type='password'] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* Dashboard */
+.card .card-body {
+  display: flex;
+  font-weight: 400;
+  justify-content: space-between;
+  align-items: center;
+}
+.card .card-body .tile-left .fa-solid {
+  color: #eee;
+}
+.card .card-body .tile-right {
+  text-align: right;
+  line-height: 1.618;
+}
+.card .card-body .tile-right .tile-number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+}
+.card .card-body .tile-right .tile-description {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+/* tables manage admin */
+table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table td,
+table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  white-space: nowrap;
+}
+
+table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+table tr:hover {
+  background-color: #ddd;
+}
+
+table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #202744;
+  color: white;
+}
+tbody td {
+  text-align: center;
+}
+
+.btn.w-45 {
+  width: 45%;
+}
+
+.table-container {
+  overflow-y: auto;
+  overflow-x: auto;
+  max-height: 160px;
+}
+.table-wrapper {
+  overflow-y: auto;
+  overflow-x: auto;
+  max-height: 480px;
+}
+
+@media (min-width: 1400px) {
+  .content.container {
+    max-width: 100%;
+  }
+}
+
+/* image preview */
+.preview {
+  width: 100%;
+  max-width: 600px;
+}
+
+/* Editor*/
+.public-DraftStyleDefault-ltr {
+  margin: 0px !important;
+}
