@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Button, Form, Row } from 'react-bootstrap';
+import { Button, Container, Form, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 import Swal from 'sweetalert2';
@@ -159,27 +159,29 @@ const Admin = () => {
   const { pageIndex, pageSize } = state;
 
   return (
-    <div className="container-fluid">
+    <Container fluid>
       <Row>
         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
           <h1 className="h2">Manage Admin</h1>
           <div className="btn-toolbar mb-2 mb-md-0"></div>
         </div>
-        <Form onSubmit={handleAddAdmin}>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Username</Form.Label>
-            <Form.Control value={username} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Masukkan Username..." autoComplete="username" />
-          </Form.Group>
+        <div className="pt-2" style={{ fontWeight: '500' }}>
+          <Form onSubmit={handleAddAdmin}>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label className="h5">Username</Form.Label>
+              <Form.Control value={username} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Masukkan Username..." autoComplete="username" />
+            </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Masukkan Password..." autoComplete="current-password" />
-          </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label className="h5">Password</Form.Label>
+              <Form.Control value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Masukkan Password..." autoComplete="current-password" />
+            </Form.Group>
 
-          <Button variant="primary" type="submit">
-            Tambah
-          </Button>
-        </Form>
+            <Button variant="primary" type="submit">
+              Tambah
+            </Button>
+          </Form>
+        </div>
         {loading ? (
           <p className="py-3 px-0 text-center m-0">Loading...</p>
         ) : getDataAdmin.length > 0 ? (
@@ -258,7 +260,7 @@ const Admin = () => {
           </div>
         )}
       </Row>
-    </div>
+    </Container>
   );
 };
 export default Admin;

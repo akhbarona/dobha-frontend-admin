@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Button, FormControl, InputGroup, Row } from 'react-bootstrap';
+import { Button, Container, FormControl, InputGroup, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 import Swal from 'sweetalert2';
@@ -118,7 +118,7 @@ const Products = () => {
   const { pageIndex, pageSize, globalFilter } = state;
 
   return (
-    <div className="container-fluid">
+    <Container fluid>
       <Row className="justify-content-between">
         <Button className="w-25" variant="primary" onClick={() => navigate('/create-products')}>
           Tambah Produk
@@ -209,7 +209,7 @@ const Products = () => {
           </div>
         )}
       </Row>
-    </div>
+    </Container>
   );
 };
 export default Products;

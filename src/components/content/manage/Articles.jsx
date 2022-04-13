@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Button, FormControl, InputGroup, Row } from 'react-bootstrap';
+import { Button, Container, FormControl, InputGroup, Row } from 'react-bootstrap';
 import AuthService from '../../services/auth.service';
 import GetService from '../../services/get.service';
 import { useNavigate } from 'react-router-dom';
@@ -119,7 +119,7 @@ const Articles = () => {
   const { pageIndex, pageSize, globalFilter } = state;
 
   return (
-    <div className="container-fluid">
+    <Container fluid>
       <Row className="justify-content-between">
         <Button className="w-25" variant="primary" onClick={() => navigate('/create-article')}>
           Tambah Artikel
@@ -136,7 +136,7 @@ const Articles = () => {
         {loading ? (
           <p className="py-3 px-0 text-center m-0">Loading...</p>
         ) : getDataArticle.length > 0 ? (
-          <div className="my-3 table-wrapper  p-0">
+          <div className="my-3 table-container p-0">
             <table {...getTableProps()}>
               <thead>
                 {headerGroups.map((headerGroup) => (
@@ -211,7 +211,7 @@ const Articles = () => {
           </div>
         )}
       </Row>
-    </div>
+    </Container>
   );
 };
 

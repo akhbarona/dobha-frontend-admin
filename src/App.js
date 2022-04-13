@@ -30,10 +30,13 @@ function App(props) {
   const toggle = () => {
     setIsOpen(!isOpen);
   };
-  let location = useLocation();
+
+  const location = useLocation();
+
+  const position = location.pathname !== '/';
   return (
-    <div className="App wrapper">
-      {location.pathname !== '/' && <SideBar toggle={toggle} isOpen={isOpen} />}
+    <div className={position ? 'App' : 'login-wrapper'}>
+      {position && <SideBar toggle={toggle} isOpen={isOpen} />}
 
       <Content toggle={toggle} isOpen={isOpen} />
     </div>

@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react';
 import { Button, Container, Form, Row } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Editor } from 'react-draft-wysiwyg';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { EditorState, convertToRaw, ContentState } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
-import htmlToDraft from 'html-to-draftjs';
+// import { Editor } from 'react-draft-wysiwyg';
+// import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+// import { Editor, EditorState, convertToRaw, ContentState } from 'draft-js';
+// import draftToHtml from 'draftjs-to-html';
+// import htmlToDraft from 'html-to-draftjs';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Swal from 'sweetalert2';
 import AuthService from '../../../services/auth.service';
 
@@ -16,7 +18,7 @@ const CreateArticle = () => {
   const [body, setBody] = useState('');
   const [image, setImage] = useState(null);
   const [isUpdate, setIsUpdate] = useState(false);
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  // const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   const navigate = useNavigate();
   const { slug } = useParams();
@@ -35,17 +37,21 @@ const CreateArticle = () => {
             setImagePreview(data.image || '');
 
             /*  Convert html to draftJS editor  */
-            const contentFromHtml = htmlToDraft(data.body);
-            const contentState = ContentState.createFromBlockArray(contentFromHtml.contentBlocks);
-            const _editorState = EditorState.createWithContent(contentState);
+            // const contentFromHtml = htmlToDraft(data.body);
+            // const contentState = ContentState.createFromBlockArray(contentFromHtml.contentBlocks);
+            // const _editorState = EditorState.createWithContent(contentState);
 
-            setEditorState(_editorState);
+            // setEditorState(_editorState);
           })
           .catch((err) => console.log(err));
       }
       getData();
     }
   }, [slug]);
+  // const onSetEditorState = (newState) => {
+  //   setEditorState(newState);
+  //   setBody(draftToHtml(convertToRaw(newState.getCurrentContent())));
+  // };
 
   const handleImage = (e) => {
     if (e.target.files[0]) {
@@ -141,26 +147,37 @@ const CreateArticle = () => {
     padding: '0.375rem 0.75rem',
     background: '#eee',
   };
-  const onSetEditorState = (newState) => {
-    setEditorState(newState);
-    setBody(draftToHtml(convertToRaw(newState.getCurrentContent())));
-  };
+
   return (
     <Container fluid>
-      <Button className="btn btn-sm btn-danger" onClick={() => navigate(-1)}>
-        go back
-      </Button>
-      <Row className="pt-2">
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3" controlId="formBasicTitle">
-            <Form.Label className="h4">Judul Artikel</Form.Label>
-            <Form.Control name="title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Masukkan judul artikel..." />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicBody">
-            <Form.Label className="h4">Isi Artikel</Form.Label>
-            {/* <Form.Control type="text" value={body} onChange={(e) => setBody(e.target.value)} placeholder="Masukkan isi artikel..." /> */}
+      <Row>
+        <div className="d-flex">
+          <Button className="btn btn-sm btn-danger" onClick={() => navigate(-1)}>
+            go back
+          </Button>
+        </div>
+        <Row className="pt-2" style={{ fontWeight: '500' }}>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3" controlId="formBasicTitle">
+              <Form.Label className="h5">Judul Artikel</Form.Label>
+              <Form.Control name="title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Ketik judul artikel..." required />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicBody">
+              <Form.Label className="h5">Isi Artikel</Form.Label>
+              {/* <Form.Control type="text" value={body} onChange={(e) => setBody(e.target.value)} placeholder="Masukkan isi artikel..." /> */}
 
-            <Editor
+              <CKEditor
+                config={{ placeholder: 'Ketik isi artikel...' }}
+                editor={ClassicEditor}
+                data={body}
+                onChange={(event, editor) => {
+                  const data = editor.getData();
+                  setBody(data);
+                }}
+                required
+              />
+
+              {/* <Editor
               wrapperStyle={wrapperStyle}
               editorStyle={editorStyle}
               editorState={editorState}
@@ -176,23 +193,24 @@ const CreateArticle = () => {
                 link: { inDropdown: true },
                 history: { inDropdown: true },
               }}
-            />
-            {/* 
+            /> */}
+              {/* 
             <Form.Control as="textarea" rows="3" value={body} onChange={(e) => setBody(e.target.value)} /> */}
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicImage">
-            {imagePreview && (
-              <div className="text-center p-3">
-                <img className="preview" src={`${imagePreview}`} alt="preview" />
-              </div>
-            )}
-            <Form.Label className="h4">Upload Gambar</Form.Label>
-            <Form.Control name="image" accept="image/*" type="file" onChange={handleImage} />
-          </Form.Group>
-          <Button variant="primary" type="submit">
-            {isUpdate ? 'Update' : 'Submit'}
-          </Button>
-        </Form>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicImage">
+              {imagePreview && (
+                <div className="text-center p-3">
+                  <img className="preview" src={`${imagePreview}`} alt="preview" />
+                </div>
+              )}
+              <Form.Label className="h5">Upload Gambar</Form.Label>
+              <Form.Control name="image" accept="image/*" type="file" onChange={handleImage} />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              {isUpdate ? 'Update' : 'Submit'}
+            </Button>
+          </Form>
+        </Row>
       </Row>
     </Container>
   );

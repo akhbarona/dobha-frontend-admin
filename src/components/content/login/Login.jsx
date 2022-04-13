@@ -34,26 +34,22 @@ const Login = () => {
   };
 
   return (
-    <div className="login-wrapper ">
-      <div className="body-login text-center">
-        <main className="form-signin">
-          <form onSubmit={handleLogin}>
-            <img className="mb-4" src="./dobha.jpg" alt="" width="200" height="100" />
-            <div className="form-floating my-2">
-              <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="form-control" id="floatingInput" placeholder="Masukkan Username" autoComplete="username" />
-              <label htmlFor="floatingInput">Username</label>
-            </div>
-            <div className="form-floating my-2">
-              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="form-control" id="floatingPassword" placeholder="Password" autoComplete="current-password" />
-              <label htmlFor="floatingPassword">Password</label>
-            </div>
-            <button className="w-100 btn btn-lg btn-primary" type="submit">
-              Sign in
-            </button>
-          </form>
-        </main>
-      </div>
-    </div>
+    <main className="form-signin">
+      <form onSubmit={handleLogin}>
+        <img className="mb-4" src="./dobha.jpg" alt="" width="200" height="100" />
+        <div className="form-floating my-2">
+          <input type="text" name="username" value={username} onChange={(e) => setUsername(e.target.value)} className="form-control" id="floatingInput" placeholder="Masukkan Username" autoComplete="username" />
+          <label htmlFor="floatingInput">Username</label>
+        </div>
+        <div className="form-floating my-2">
+          <input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} className="form-control" id="floatingPassword" placeholder="Password" autoComplete="current-password" />
+          <label htmlFor="floatingPassword">Password</label>
+        </div>
+        <button className="w-100 btn btn-lg btn-primary" type="submit">
+          Sign in
+        </button>
+      </form>
+    </main>
   );
 };
 export default Login;

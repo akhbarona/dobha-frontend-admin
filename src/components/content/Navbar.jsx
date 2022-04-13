@@ -26,10 +26,10 @@ function NavBar(props) {
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
         <Nav className="ml-auto" navbar>
-          <Nav.Link className="px-3" as={Link} to="#">
+          <Nav.Link className="px-3" as={Link} style={{ fontWeight: 'Bold' }} to="#">
             Hi, {currentUser && currentUser.user.username}
           </Nav.Link>
-          <Nav.Link className="px-3" as={Link} onClick={logOut} to="/">
+          <Nav.Link className="px-3" as={Link} style={{ fontWeight: 'Bold' }} onClick={logOut} to="/">
             Logout
           </Nav.Link>
         </Nav>

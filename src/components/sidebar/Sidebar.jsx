@@ -4,12 +4,12 @@ import { faHome, faBox, faBoxArchive, faTimes, faUsers, faNewspaper } from '@for
 import { useEffect, useState } from 'react';
 import { Nav, Button } from 'react-bootstrap';
 import classNames from 'classnames';
-import { Link } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import AuthService from '../services/auth.service';
 
 function SideBar(props) {
   const [currentUser, setCurrentUser] = useState(undefined);
-
+  const location = useLocation();
   useEffect(() => {
     const user = AuthService.getCurrentUser();
     if (user) {
@@ -28,14 +28,14 @@ function SideBar(props) {
 
       <Nav className="flex-column pt-2">
         <Nav.Item>
-          <Nav.Link as={Link} to="/dashboard">
+          <Nav.Link as={NavLink} to="/dashboard">
             <FontAwesomeIcon icon={faHome} className="margin-nav-right" />
             Dashboard
           </Nav.Link>
         </Nav.Item>
         {currentUser && currentUser.user.username === 'superadmin' ? (
           <Nav.Item>
-            <Nav.Link as={Link} to="/manage-admin">
+            <Nav.Link as={NavLink} to="/manage-admin">
               <FontAwesomeIcon icon={faUsers} className="margin-nav-right" />
               Manage Admin
             </Nav.Link>
@@ -43,21 +43,15 @@ function SideBar(props) {
         ) : undefined}
 
         <Nav.Item>
-          <Nav.Link as={Link} to="/manage-products">
+          <Nav.Link as={NavLink} to="/manage-products">
             <FontAwesomeIcon icon={faBox} className="margin-nav-right" />
             Manage Products
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link as={Link} to="/manage-article">
+          <Nav.Link as={NavLink} to="/manage-article">
             <FontAwesomeIcon icon={faNewspaper} className="margin-nav-right" />
             Manage Article
-          </Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link as={Link} to="/manage-iventaris">
-            <FontAwesomeIcon icon={faBoxArchive} className="margin-nav-right" />
-            Manage Iventaris
           </Nav.Link>
         </Nav.Item>
       </Nav>
