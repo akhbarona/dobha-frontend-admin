@@ -25,6 +25,7 @@ a:focus {
   color: #adb5bd;
   margin-left: -250px;
   transition: all 0.5s;
+  box-shadow: 0 0 6px rgb(35 173 255);
 }
 
 .sidebar.is-open {
@@ -106,7 +107,9 @@ li a.dropdown-toggle::after {
 .margin-nav-right {
   margin-right: 0.5rem !important;
 }
-
+.bg-logo {
+  background: linear-gradient(90deg, rgba(53, 64, 82, 1) 5%, rgba(53, 64, 82, 0.7878501742493873) 41%);
+}
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
