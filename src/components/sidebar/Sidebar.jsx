@@ -54,6 +54,12 @@ function SideBar(props) {
             Manage Article
           </Nav.Link>
         </Nav.Item>
+        <Nav.Item>
+          <Nav.Link as={NavLink} to="/manage-transaksi">
+            <FontAwesomeIcon icon={faNewspaper} className="margin-nav-right" />
+            Manage Transaksi
+          </Nav.Link>
+        </Nav.Item>
       </Nav>
     </div>
   );

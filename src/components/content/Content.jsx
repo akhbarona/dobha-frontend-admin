@@ -15,6 +15,7 @@ import CreateArticle from './manage/create/CreateArticle';
 import CreateProduct from './manage/create/CreateProduct';
 import CreateAdmin from './manage/create/CreateAdmin';
 import PageNotFound from './PageNotFound';
+import Transaksi from './manage/Transaksi';
 
 function Content(props) {
   const navigate = useNavigate();
@@ -46,6 +47,7 @@ function Content(props) {
           <Route path=":username" element={<CreateAdmin />} />
         </Route>
         <Route exact path="/manage-products" element={<Products />} />
+        <Route exact path="/manage-transaksi" element={<Transaksi />} />
         <Route exact path="/create-products" element={<CreateProduct />}>
           <Route path=":slug_produk" element={<CreateProduct />} />
         </Route>
