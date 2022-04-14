@@ -16,13 +16,24 @@ const getAllArticle = () => {
 
 const getAllProduct = () => {
   return axios.get(`/api/read-all-product`).then((response) => {
+    // console.log(response.data.data)
     return response.data.data;
   });
 };
+
+const getAllTransaksi = () => {
+  // https://apiongkir.herokuapp.com
+  return axios.get(`https://apiongkir.herokuapp.com/api/transaksi`).then((response) => {
+    return response.data.data;
+  });
+};
+
+
 const getService = {
   getAllAdmin,
   getAllArticle,
   getAllProduct,
+  getAllTransaksi
 };
 
 export default getService;
