@@ -23,7 +23,8 @@ function SideBar(props) {
         <Button variant="link" onClick={props.toggle} style={{ color: '#fff' }} className="mt-4">
           <FontAwesomeIcon icon={faTimes} pull="right" size="xs" />
         </Button>
-        <h3>Dobha Parfume</h3>
+
+        <img className="bg-logo" src="./dobha-transparent.png" alt="dobha-parfume" style={{ width: '100%', height: '100%' }} />
       </div>
 
       <Nav className="flex-column pt-2">

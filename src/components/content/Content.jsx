@@ -16,6 +16,7 @@ import CreateProduct from './manage/create/CreateProduct';
 import CreateAdmin from './manage/create/CreateAdmin';
 import PageNotFound from './PageNotFound';
 import Transaksi from './manage/Transaksi';
+import ProtectedRoutes from './ProctectedRoutes';
 
 function Content(props) {
   const navigate = useNavigate();
@@ -41,10 +42,21 @@ function Content(props) {
 
       <Routes>
         <Route exact path="/" element={<Login />} />
-        <Route exact path="/dashboard" element={<Main />} />
-        <Route exact path="/manage-admin" element={<Admin />} />
-        <Route exact path="/create-admin" element={<CreateAdmin />}>
-          <Route path=":username" element={<CreateAdmin />} />
+        <Route element={<ProtectedRoutes />}>
+          <Route exact path="/dashboard" element={<Main />} />
+          <Route exact path="/manage-admin" element={<Admin />} />
+          <Route exact path="/create-admin" element={<CreateAdmin />}>
+            <Route path=":username" element={<CreateAdmin />} />
+          </Route>
+          <Route exact path="/manage-products" element={<Products />} />
+          <Route exact path="/create-products" element={<CreateProduct />}>
+            <Route path=":slug_produk" element={<CreateProduct />} />
+          </Route>
+          <Route exact path="/manage-article" element={<Articles />} />
+          <Route exact path="/create-article" element={<CreateArticle />}>
+            <Route path=":slug" element={<CreateArticle />} />
+          </Route>
+          <Route path="*" element={<PageNotFound />} />
         </Route>
         <Route exact path="/manage-products" element={<Products />} />
         <Route exact path="/manage-transaksi" element={<Transaksi />} />

@@ -59,12 +59,12 @@ const CreateArticle = () => {
       //   console.log('picture: ', e.target.files);
       setImage(file);
       setImagePreview(URL.createObjectURL(file));
-      //   const reader = new FileReader();
-      //   reader.addEventListener('load', () => {
-      //     // console.log(reader.result)
-      //     setFileImageData(reader.result);
-      //   });
-      //   reader.readAsDataURL(e.target.files[0]);
+
+      // const reader = new FileReader();
+      // reader.onload = (e) => {
+      //   setImage(e.target.result);
+      // };
+      // reader.readAsDataURL(file);
     }
   };
 
@@ -139,15 +139,6 @@ const CreateArticle = () => {
     }
   };
 
-  const wrapperStyle = {
-    border: '2px solid rgb(236 238 241)',
-  };
-  const editorStyle = {
-    height: '10rem',
-    padding: '0.375rem 0.75rem',
-    background: '#eee',
-  };
-
   return (
     <Container fluid>
       <Row>
@@ -200,7 +191,7 @@ const CreateArticle = () => {
             <Form.Group className="mb-3" controlId="formBasicImage">
               {imagePreview && (
                 <div className="text-center p-3">
-                  <img className="preview" src={`${imagePreview}`} alt="preview" />
+                  <img className="preview" src={isUpdate ? `https://dobha.000webhostapp.com/${imagePreview}` : `${imagePreview}`} alt="preview" />
                 </div>
               )}
               <Form.Label className="h5">Upload Gambar</Form.Label>
