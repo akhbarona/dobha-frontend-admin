@@ -22,8 +22,8 @@ const getAllProduct = () => {
 };
 
 const getAllTransaksi = () => {
-  // https://apiongkir.herokuapp.com
-  return axios.get(`https://apiongkir.herokuapp.com/api/transaksi`).then((response) => {
+  //${process.env.REACT_APP_API_URL_TRANSAKSI}
+  return axios.get(`${process.env.REACT_APP_API_URL_TRANSAKSI}/api/transaksi`).then((response) => {
     return response.data.data;
   });
 };
