@@ -1,16 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import {
-  Container,
-  FormControl,
-  InputGroup,
-  Row,
-} from "react-bootstrap";
+import { Container, FormControl, InputGroup, Row, Form ,Col} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import ModalImage from "react-modal-image";
 import AuthService from "../../services/auth.service";
 import GetService from "../../services/get.service";
-import moment from 'moment';
-import 'moment/locale/id';
+import moment from "moment";
+import "moment/locale/id";
 import {
   useTable,
   useSortBy,
@@ -18,12 +13,20 @@ import {
   useGlobalFilter,
 } from "react-table";
 import KonfimasiPembayaran from "../../KonfimasiPembayaran";
+import DownloadRekapitulasi from "../../KonfimasiPembayaran/DownloadRekapitulasi";
 
 const Transaksi = () => {
   const [getDataProduk, setDataProduk] = useState([]);
-
+  const [tgl ,setTgl] = useState('');
+  const [tahun , setTahun] = useState('');
   const [loading, setLoading] = useState(true);
   // console.log(getDataProduk);
+  let d = new Date((new Date).toLocaleString("en-US", {
+    timeZone: "Asia/Jakarta"
+}));
+let month = d.toLocaleDateString();
+console.log(month[0]);
+
   const navigate = useNavigate();
   useEffect(() => {
     getProduk();
@@ -51,7 +54,6 @@ const Transaksi = () => {
       }
     );
   };
-
 
   const COLUMNS = [
     {
@@ -99,9 +101,9 @@ const Transaksi = () => {
       accessor: "created_at",
       Cell: (row) => (
         <div className="d-flex d-flex justify-content-around">
-          <p>{moment(row.row.original.created_at).format('LL')}</p>
+          <p>{moment(row.row.original.created_at).format("LL")}</p>
         </div>
-      )
+      ),
     },
     {
       Header: "Estimasi (hari)",
@@ -112,10 +114,12 @@ const Transaksi = () => {
       accessor: "bukti",
       Cell: (row) => (
         <div className="d-flex d-flex justify-content-around">
+          {console.log(row.row.original.jumlah)}
           <ModalImage
-           small={row.row.original.bukti_bayar}
-           large={row.row.original.bukti_bayar}
-           alt="bukti pembayaran" />
+            small={row.row.original.bukti_bayar}
+            large={row.row.original.bukti_bayar}
+            alt="bukti pembayaran"
+          />
           {/* <img src={row.row.original.bukti_bayar} alt="bukti pembayaran" /> */}
         </div>
       ),
@@ -131,6 +135,8 @@ const Transaksi = () => {
           email={row.row.original.email}
           username={row.row.original.username}
           getProduk={getProduk}
+          produk_id={row.row.original.produk_id}
+          buyed_total={row.row.original.jumlah}
         />
       ),
     },
@@ -165,6 +171,7 @@ const Transaksi = () => {
   );
 
   const { pageIndex, pageSize, globalFilter } = state;
+  
   return (
     <Container fluid>
       <Row className="justify-content-between">
@@ -185,6 +192,41 @@ const Transaksi = () => {
           <p className="py-3 px-0 text-center m-0">Loading...</p>
         ) : getDataProduk.length > 0 ? (
           <div className="my-3 table-container table-responsive">
+            <Row>
+              <Col lg={3}>
+                <button
+                  onClick={() => DownloadRekapitulasi(tgl, tahun)}
+                  className="btn btn-success ustify-content rounded mb-3">
+                  Laporan Penjualan
+                </button>
+              </Col>
+              <Col lg={2}>
+                <Form.Select onChange={(e) => setTgl(e.target.value)} aria-label="Default select example">
+                  <option value={''}>Bulan</option>
+                  <option value={'01'}>01</option>
+                  <option value={'02'}>02</option>
+                  <option value={'03'}>03</option>
+                  <option value={'04'}>04</option>
+                  <option value={'05'}>05</option>
+                  <option value={'06'}>06</option>
+                  <option value={'07'}>07</option>
+                  <option value={'08'}>08</option>
+                  <option value={'09'}>09</option>
+                  <option value={'10'}>10</option>
+                  <option value={'11'}>11</option>
+                  <option value={'12'}>12</option>
+                </Form.Select>
+              </Col>
+              <Col lg={2}>
+                <Form.Select onChange={(e) => setTahun(e.target.value)} aria-label="Default select example">
+                  <option value={''}>Tahun</option>
+                  <option value={2022}>2022</option>
+                  <option value={2023}>2023</option>
+                  <option value={2024}>2024</option>
+                  <option value={2025}>2025</option>
+                </Form.Select>
+              </Col>
+            </Row>
             <table {...getTableProps()}>
               <thead>
                 {headerGroups.map((headerGroup) => (
