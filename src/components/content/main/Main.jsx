@@ -23,12 +23,8 @@ const Main = () => {
     const user = AuthService.getCurrentUser();
 
     setCurrentUser(user);
-    const timeout = setTimeout(() => {
-      console.log('session berakhir');
-      AuthService.logout();
-      navigate('/');
-    }, user.expired_token);
   }, []);
+
   // useEffect(() => {
   //   const timerId = timeout(currentUser.expired_token);
   //   return () => {
