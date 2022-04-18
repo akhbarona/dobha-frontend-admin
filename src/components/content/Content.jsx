@@ -49,6 +49,7 @@ function Content(props) {
             <Route path=":username" element={<CreateAdmin />} />
           </Route>
           <Route exact path="/manage-products" element={<Products />} />
+          <Route exact path="/manage-transaksi" element={<Transaksi />} />
           <Route exact path="/create-products" element={<CreateProduct />}>
             <Route path=":slug_produk" element={<CreateProduct />} />
           </Route>
@@ -58,8 +59,7 @@ function Content(props) {
           </Route>
           <Route path="*" element={<PageNotFound />} />
         </Route>
-        <Route exact path="/manage-products" element={<Products />} />
-        <Route exact path="/manage-transaksi" element={<Transaksi />} />
+        {/* <Route exact path="/manage-products" element={<Products />} />
         <Route exact path="/create-products" element={<CreateProduct />}>
           <Route path=":slug_produk" element={<CreateProduct />} />
         </Route>
@@ -67,7 +67,7 @@ function Content(props) {
         <Route exact path="/create-article" element={<CreateArticle />}>
           <Route path=":slug" element={<CreateArticle />} />
         </Route>
-        <Route path="*" element={<PageNotFound />} />
+        <Route path="*" element={<PageNotFound />} /> */}
       </Routes>
     </div>
   );
