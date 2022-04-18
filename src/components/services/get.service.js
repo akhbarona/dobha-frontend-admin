@@ -16,13 +16,24 @@ const getAllArticle = () => {
 
 const getAllProduct = () => {
   return axios.get(`/api/read-all-product`).then((response) => {
+    // console.log(response.data.data)
     return response.data.data;
   });
 };
+
+const getAllTransaksi = () => {
+  //${process.env.REACT_APP_API_URL_TRANSAKSI}
+  return axios.get(`${process.env.REACT_APP_API_URL_TRANSAKSI}/api/transaksi`).then((response) => {
+    return response.data.data;
+  });
+};
+
+
 const getService = {
   getAllAdmin,
   getAllArticle,
   getAllProduct,
+  getAllTransaksi
 };
 
 export default getService;

@@ -15,6 +15,7 @@ import CreateArticle from './manage/create/CreateArticle';
 import CreateProduct from './manage/create/CreateProduct';
 import CreateAdmin from './manage/create/CreateAdmin';
 import PageNotFound from './PageNotFound';
+import Transaksi from './manage/Transaksi';
 import ProtectedRoutes from './ProctectedRoutes';
 
 function Content(props) {
@@ -57,6 +58,16 @@ function Content(props) {
           </Route>
           <Route path="*" element={<PageNotFound />} />
         </Route>
+        <Route exact path="/manage-products" element={<Products />} />
+        <Route exact path="/manage-transaksi" element={<Transaksi />} />
+        <Route exact path="/create-products" element={<CreateProduct />}>
+          <Route path=":slug_produk" element={<CreateProduct />} />
+        </Route>
+        <Route exact path="/manage-article" element={<Articles />} />
+        <Route exact path="/create-article" element={<CreateArticle />}>
+          <Route path=":slug" element={<CreateArticle />} />
+        </Route>
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>
   );

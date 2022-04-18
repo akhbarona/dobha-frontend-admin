@@ -37,7 +37,6 @@ function App(props) {
   return (
     <div className={position ? 'App' : 'login-wrapper'}>
       {position && <SideBar toggle={toggle} isOpen={isOpen} />}
-
       <Content toggle={toggle} isOpen={isOpen} />
     </div>
   );
