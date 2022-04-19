@@ -19,8 +19,8 @@ a:focus {
     SIDEBAR STYLE
 ----------------------------------------------------- */
 .sidebar {
-  min-width: 250px;
-  max-width: 250px;
+  min-width: 270px;
+  max-width: 270px;
   background: #354052;
   color: #adb5bd;
   margin-left: -250px;

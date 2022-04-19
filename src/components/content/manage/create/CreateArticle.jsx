@@ -11,7 +11,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Swal from 'sweetalert2';
 import AuthService from '../../../services/auth.service';
-
+import GetService from '../../../services/get.service';
 const CreateArticle = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [title, setTitle] = useState('');
@@ -22,7 +22,8 @@ const CreateArticle = () => {
 
   const navigate = useNavigate();
   const { slug } = useParams();
-
+  const [getAllCategory, setGetAllCategory] = useState([]);
+  const [category, setCategory] = useState(0);
   useEffect(() => {
     if (slug) {
       setIsUpdate(true);
@@ -35,7 +36,7 @@ const CreateArticle = () => {
             setTitle(data.title);
             setBody(data.body);
             setImagePreview(data.image || '');
-
+            setCategory(data.category_id);
             /*  Convert html to draftJS editor  */
             // const contentFromHtml = htmlToDraft(data.body);
             // const contentState = ContentState.createFromBlockArray(contentFromHtml.contentBlocks);
@@ -47,7 +48,23 @@ const CreateArticle = () => {
       }
       getData();
     }
+    getCategory();
   }, [slug]);
+
+  const getCategory = () => {
+    GetService.getAllCategoryArticle().then(
+      (res) => {
+        setGetAllCategory(res);
+      },
+      (error) => {
+        if (error.response && error.response.status === 403) {
+          AuthService.logout();
+          navigate('/');
+          window.location.reload();
+        }
+      }
+    );
+  };
   // const onSetEditorState = (newState) => {
   //   setEditorState(newState);
   //   setBody(draftToHtml(convertToRaw(newState.getCurrentContent())));
@@ -72,9 +89,9 @@ const CreateArticle = () => {
     e.preventDefault();
     if (isUpdate) {
       try {
-        await AuthService.updateArticle(title, body, image, slug).then(
+        await AuthService.updateArticle(title, body, image, slug, category).then(
           (res) => {
-            // console.log(res);
+            console.log(res);
             Swal.fire({
               icon: 'success',
               title: 'Berhasil Update',
@@ -105,7 +122,7 @@ const CreateArticle = () => {
       }
     } else {
       try {
-        await AuthService.postArticle(title, body, image).then(
+        await AuthService.postArticle(title, body, image, category).then(
           (res) => {
             // console.log(res);
             Swal.fire({
@@ -152,6 +169,19 @@ const CreateArticle = () => {
             <Form.Group className="mb-3" controlId="formBasicTitle">
               <Form.Label className="h5">Judul Artikel</Form.Label>
               <Form.Control name="title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Ketik judul artikel..." required />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicNamaProduk">
+              <Form.Label className="h5">Kategori Artikel</Form.Label>
+              <Form.Control as="select" value={category} onChange={(e) => setCategory(e.target.value)} aria-label="category">
+                <option value={0} disabled selected>
+                  Pilih Kategori Artikel
+                </option>
+                {getAllCategory.map((item, index) => (
+                  <option key={index} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </Form.Control>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicBody">
               <Form.Label className="h5">Isi Artikel</Form.Label>

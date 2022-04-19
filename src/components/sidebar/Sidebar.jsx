@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faBox, faBoxArchive, faTimes, faUsers, faNewspaper } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faBox, faBoxArchive, faTimes, faUsers, faNewspaper, faTags } from '@fortawesome/free-solid-svg-icons';
 
 import { useEffect, useState } from 'react';
 import { Nav, Button } from 'react-bootstrap';
@@ -24,7 +24,7 @@ function SideBar(props) {
           <FontAwesomeIcon icon={faTimes} pull="right" size="xs" />
         </Button>
 
-        <img className="bg-logo" src="./dobha-transparent.png" alt="dobha-parfume" style={{ width: '100%', height: '100%' }} />
+        <img className="bg-logo" src="/dobha-transparent.png" alt="dobha-parfume" style={{ width: '100%', height: '100%' }} />
       </div>
 
       <Nav className="flex-column pt-2">
@@ -56,8 +56,20 @@ function SideBar(props) {
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link as={NavLink} to="/manage-transaksi">
+          <Nav.Link as={NavLink} to="/manage-category-products">
+            <FontAwesomeIcon icon={faTags} className="margin-nav-right" />
+            Manage Category Products
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link as={NavLink} to="/manage-category-articles">
             <FontAwesomeIcon icon={faNewspaper} className="margin-nav-right" />
+            Manage Category Article
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link as={NavLink} to="/manage-transaksi">
+            <FontAwesomeIcon icon={faBoxArchive} className="margin-nav-right" />
             Manage Transaksi
           </Nav.Link>
         </Nav.Item>

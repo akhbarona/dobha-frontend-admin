@@ -28,12 +28,25 @@ const getAllTransaksi = () => {
   });
 };
 
-
+const getAllCategoryProduct = () => {
+  return axios.get(`${process.env.REACT_APP_API_URL}/api/product-category`).then((response) => {
+    // console.log(response);
+    return response.data.data;
+  });
+};
+const getAllCategoryArticle = () => {
+  return axios.get(`${process.env.REACT_APP_API_URL}/api/article-category`).then((response) => {
+    // console.log(response);
+    return response.data.data;
+  });
+};
 const getService = {
   getAllAdmin,
   getAllArticle,
   getAllProduct,
-  getAllTransaksi
+  getAllTransaksi,
+  getAllCategoryProduct,
+  getAllCategoryArticle,
 };
 
 export default getService;

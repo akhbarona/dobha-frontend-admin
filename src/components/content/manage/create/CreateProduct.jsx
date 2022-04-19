@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import GetService from '../../../services/get.service';
 const CreateProduct = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [kodeProduk, setkodeProduk] = useState('');
@@ -15,6 +16,8 @@ const CreateProduct = () => {
   const [deskripsi_produk, setDeskripsi_Produk] = useState('');
   const [gambarProduk, setgambarProduk] = useState('');
   const [isUpdate, setIsUpdate] = useState(false);
+  const [getAllCategory, setGetAllCategory] = useState([]);
+  const [category, setCategory] = useState(0);
 
   const navigate = useNavigate();
   const { slug_produk } = useParams();
@@ -35,10 +38,27 @@ const CreateProduct = () => {
           sethargaSatuan(data.harga_satuan);
           setDeskripsi_Produk(data.deskripsi_produk);
           setImagePreview(data.gambar_produk);
+          setCategory(data.product_category_id);
         })
         .catch((err) => console.log(err));
     }
+    getCategory();
   }, [slug_produk]);
+
+  const getCategory = () => {
+    GetService.getAllCategoryProduct().then(
+      (res) => {
+        setGetAllCategory(res);
+      },
+      (error) => {
+        if (error.response && error.response.status === 403) {
+          AuthService.logout();
+          navigate('/');
+          window.location.reload();
+        }
+      }
+    );
+  };
 
   const handleImage = (e) => {
     if (e.target.files[0]) {
@@ -52,7 +72,7 @@ const CreateProduct = () => {
     e.preventDefault();
     if (isUpdate) {
       try {
-        await AuthService.updateProduct(kodeProduk, namaProduk, deskripsi_produk, stockProduk, hargaSatuan, gambarProduk, slug_produk).then(
+        await AuthService.updateProduct(kodeProduk, namaProduk, deskripsi_produk, stockProduk, hargaSatuan, gambarProduk, slug_produk, category).then(
           (res) => {
             console.log(res);
             Swal.fire({
@@ -85,7 +105,7 @@ const CreateProduct = () => {
       }
     } else {
       try {
-        await AuthService.postProduct(kodeProduk, namaProduk, deskripsi_produk, stockProduk, hargaSatuan, gambarProduk).then(
+        await AuthService.postProduct(kodeProduk, namaProduk, deskripsi_produk, stockProduk, hargaSatuan, gambarProduk, category).then(
           (res) => {
             Swal.fire({
               icon: 'success',
@@ -152,6 +172,19 @@ const CreateProduct = () => {
             <Form.Group className="mb-3" controlId="formBasicNamaProduk">
               <Form.Label className="h5">Nama produk</Form.Label>
               <Form.Control value={namaProduk} onChange={handleChangeNamaProduk} type="text" placeholder="Ketik nama produk..." />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicNamaProduk">
+              <Form.Label className="h5">Kategori produk</Form.Label>
+              <Form.Control as="select" value={category} onChange={(e) => setCategory(e.target.value)} aria-label="category">
+                <option value={0} disabled selected>
+                  Pilih Kategori Produk
+                </option>
+                {getAllCategory.map((item, index) => (
+                  <option key={index} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </Form.Control>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicStockProduk">
               <Form.Label className="h5">Stock produk</Form.Label>
