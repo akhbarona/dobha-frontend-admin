@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { Row } from "react-bootstrap";
 
 const KonfimasiPembayaran = (props) => {
   const [resi, setResi] = useState("");
@@ -78,12 +79,47 @@ const KonfimasiPembayaran = (props) => {
     });
   };
 
-  // console.log('props.resi' , props.status)
+  const handleHapus  = () => {
+    try{
+      Swal.fire({
+        title: "Konfirmasi",
+        text: "Apakah anda yakin ingin menghapus transaksi ini?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya",
+        cancelButtonText: "Tidak",
+      }).then(async(result) => {
+        if (result.value) {
+        const hasil  = await fetch(`${process.env.REACT_APP_API_URL_TRANSAKSI}/api/konfirmasi/${props.id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+
+         const data =  await hasil.json()
+          if (data.status === 200) {
+            Swal.fire("Berhasil!", "Transaksi Berhasil di Hapus", "success");
+            props.getProduk();
+          } else {
+            Swal.fire("Failed!", "Hapus Gagal", "error");
+          } 
+        }
+
+      });
+    }catch(error){
+      Swal.fire("Failed!", "Hapus Gagal", "error");
+    }
+
+  }
+
 
   return (
     <div
       className="d-flex d-flex justify-content-around"
-      style={{ width: 300 }}
+      style={{ width: 400 }}
     >
       <input
         value={props.resi ? props.resi : resi}
@@ -109,14 +145,22 @@ const KonfimasiPembayaran = (props) => {
               Loading . . .
             </button>
           ) : (
-            <button
+              <button
               onClick={() => handleKonfirmasi()}
               className="btn btn-success"
               style={{ marginLeft: 10 }}
             >
               Konfirmasi
             </button>
+            
           )}
+          <button
+              onClick={() => handleHapus()}
+              className="btn btn-danger"
+              style={{ marginLeft: 10 }}
+            >
+              Hapus
+            </button>
         </>
       )}
     </div>
