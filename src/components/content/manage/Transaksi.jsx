@@ -20,22 +20,22 @@ const Transaksi = () => {
   const [tgl ,setTgl] = useState('');
   const [tahun , setTahun] = useState('');
   const [loading, setLoading] = useState(true);
+  const [status , setStatus] = useState('');
   // console.log(getDataProduk);
   let d = new Date((new Date).toLocaleString("en-US", {
     timeZone: "Asia/Jakarta"
 }));
 let month = d.toLocaleDateString();
-console.log(month[0]);
 
   const navigate = useNavigate();
   useEffect(() => {
     getProduk();
-  }, []);
+  }, [status]);
 
   const getProduk = () => {
     setLoading(true);
     // GetService.getAllTransaksi();
-    GetService.getAllTransaksi().then(
+    GetService.getAllTransaksi(status).then(
       (res) => {
         const newData = res.map((item, index) => {
           item.no = index + 1;
@@ -193,12 +193,13 @@ console.log(month[0]);
         ) : getDataProduk.length > 0 ? (
           <div className="my-3 table-container table-responsive">
             <Row>
-              <Col lg={3}>
-                <button
-                  onClick={() => DownloadRekapitulasi(tgl, tahun)}
-                  className="btn btn-success ustify-content rounded mb-3">
-                  Laporan Penjualan
-                </button>
+              <Col lg={5}>
+              <Form.Select defaultValue={status} style={{width: 170}} onChange={(e) => setStatus(e.target.value)} aria-label="Default select example">
+                  <option value={''}>Semua</option>
+                  <option value={true}>Dibayar</option>
+                  <option value={false}>Belum dibayar</option>
+                </Form.Select>
+                
               </Col>
               <Col lg={2}>
                 <Form.Select onChange={(e) => setTgl(e.target.value)} aria-label="Default select example">
@@ -225,6 +226,14 @@ console.log(month[0]);
                   <option value={2024}>2024</option>
                   <option value={2025}>2025</option>
                 </Form.Select>
+              </Col>
+
+              <Col lg={3}>
+              <button
+                  onClick={() => DownloadRekapitulasi(tgl, tahun)}
+                  className="btn btn-success ustify-content rounded mb-3">
+                  Laporan Penjualan
+                </button>
               </Col>
             </Row>
             <table {...getTableProps()}>
