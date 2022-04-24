@@ -15,6 +15,9 @@ import {
 import KonfimasiPembayaran from "../../KonfimasiPembayaran";
 import DownloadRekapitulasi from "../../KonfimasiPembayaran/DownloadRekapitulasi";
 
+const numberWithCommas = (x) => {
+  return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+};
 const Transaksi = () => {
   const [getDataProduk, setDataProduk] = useState([]);
   const [tgl ,setTgl] = useState('');
@@ -79,6 +82,11 @@ let month = d.toLocaleDateString();
     {
       Header: "Tagihan (Harga+Ongkir)",
       accessor: "tagihan_total",
+      Cell: (row) => (
+        <div className="d-flex d-flex justify-content-around">
+          <p>{numberWithCommas(row.row.original.tagihan_total)}</p>
+        </div>
+      ),
     },
     {
       Header: "Ongir",
@@ -110,11 +118,27 @@ let month = d.toLocaleDateString();
       accessor: "estimasi",
     },
     {
+      Header: "Methode Pembayaran",
+      accessor: "metode_pembayaran",
+    },
+    {
+      Header: "Status Pengiriman",
+      accessor: "status",
+      Cell: (row) => (
+        <div className="d-flex d-flex justify-content-around">
+         {
+           row.row.original.status ==='0'?
+           <p className="text-danger">Belum di Kirim</p>:row.row.original.status === '1'?
+           <p className="text-warning">Dikirim</p>: <p className="text-success">Diterima</p>
+         }
+        </div>
+      ),
+    },
+    {
       Header: "Bukti Pembayaran",
       accessor: "bukti",
       Cell: (row) => (
         <div className="d-flex d-flex justify-content-around">
-          {console.log(row.row.original.jumlah)}
           <ModalImage
             small={row.row.original.bukti_bayar}
             large={row.row.original.bukti_bayar}
@@ -196,8 +220,9 @@ let month = d.toLocaleDateString();
               <Col lg={5}>
               <Form.Select defaultValue={status} style={{width: 170}} onChange={(e) => setStatus(e.target.value)} aria-label="Default select example">
                   <option value={''}>Semua</option>
-                  <option value={true}>Dibayar</option>
-                  <option value={false}>Belum dibayar</option>
+                  <option value={'0'}>Belum Dikirim</option>
+                  <option value={'1'}>Dikirim</option>
+                  <option value={'2'}>Diterima</option>
                 </Form.Select>
                 
               </Col>

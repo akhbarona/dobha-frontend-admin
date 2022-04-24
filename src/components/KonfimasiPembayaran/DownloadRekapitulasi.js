@@ -67,7 +67,7 @@ const DownloadRekapitulasi = async (bulan, tahun) => {
           "Tanggal_Pembelian",
         ]),
         { text: "Total Pendapatan", style: "normal" },
-        { text: `Rp.${numberWithCommas(dataPelamar.pendapatan)}`, style: "harga" },
+        { text: `Rp.${numberWithCommas(dataPelamar.pendapatan) || 0}`, style: "harga" },
       ],
       styles: {
         normal: {

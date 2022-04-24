@@ -32,7 +32,7 @@ const KonfimasiPembayaran = (props) => {
           },
           body: JSON.stringify({ 
             no_resi: resi, 
-            status: true , 
+            status: "1" , 
             username: props.username,
             email: props.email
 
@@ -62,7 +62,7 @@ const KonfimasiPembayaran = (props) => {
         
             }catch(err){
               setLoading(false);
-              console.log(err)
+              Swal.fire("Failed!", "Terjadi Kesalahan", "error");
             }
 
          }
@@ -130,7 +130,7 @@ const KonfimasiPembayaran = (props) => {
         disabled={props.resi ? true : false}
       />
 
-      {props.status ? (
+      {props.status==='1' || props.status==='2' ? (
         <button className="btn btn-success" style={{ marginLeft: 10 }} disabled>
           Sudah di Konfirmasi
         </button>
