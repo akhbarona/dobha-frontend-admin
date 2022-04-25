@@ -21,9 +21,9 @@ const getAllProduct = () => {
   });
 };
 
-const getAllTransaksi = () => {
+const getAllTransaksi = (status) => {
   //${process.env.REACT_APP_API_URL_TRANSAKSI}
-  return axios.get(`${process.env.REACT_APP_API_URL_TRANSAKSI}/api/transaksi`).then((response) => {
+  return axios.get(`${process.env.REACT_APP_API_URL_TRANSAKSI}/api/transaksi?status=${status}`).then((response) => {
     return response.data.data;
   });
 };

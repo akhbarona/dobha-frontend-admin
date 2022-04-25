@@ -15,27 +15,30 @@ import {
 import KonfimasiPembayaran from "../../KonfimasiPembayaran";
 import DownloadRekapitulasi from "../../KonfimasiPembayaran/DownloadRekapitulasi";
 
+const numberWithCommas = (x) => {
+  return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+};
 const Transaksi = () => {
   const [getDataProduk, setDataProduk] = useState([]);
   const [tgl ,setTgl] = useState('');
   const [tahun , setTahun] = useState('');
   const [loading, setLoading] = useState(true);
+  const [status , setStatus] = useState('');
   // console.log(getDataProduk);
   let d = new Date((new Date).toLocaleString("en-US", {
     timeZone: "Asia/Jakarta"
 }));
 let month = d.toLocaleDateString();
-console.log(month[0]);
 
   const navigate = useNavigate();
   useEffect(() => {
     getProduk();
-  }, []);
+  }, [status]);
 
   const getProduk = () => {
     setLoading(true);
     // GetService.getAllTransaksi();
-    GetService.getAllTransaksi().then(
+    GetService.getAllTransaksi(status).then(
       (res) => {
         const newData = res.map((item, index) => {
           item.no = index + 1;
@@ -79,6 +82,11 @@ console.log(month[0]);
     {
       Header: "Tagihan (Harga+Ongkir)",
       accessor: "tagihan_total",
+      Cell: (row) => (
+        <div className="d-flex d-flex justify-content-around">
+          <p>{numberWithCommas(row.row.original.tagihan_total)}</p>
+        </div>
+      ),
     },
     {
       Header: "Ongir",
@@ -110,11 +118,27 @@ console.log(month[0]);
       accessor: "estimasi",
     },
     {
+      Header: "Methode Pembayaran",
+      accessor: "metode_pembayaran",
+    },
+    {
+      Header: "Status Pengiriman",
+      accessor: "status",
+      Cell: (row) => (
+        <div className="d-flex d-flex justify-content-around">
+         {
+           row.row.original.status ==='0'?
+           <p className="text-danger">Belum di Kirim</p>:row.row.original.status === '1'?
+           <p className="text-warning">Dikirim</p>: <p className="text-success">Diterima</p>
+         }
+        </div>
+      ),
+    },
+    {
       Header: "Bukti Pembayaran",
       accessor: "bukti",
       Cell: (row) => (
         <div className="d-flex d-flex justify-content-around">
-          {console.log(row.row.original.jumlah)}
           <ModalImage
             small={row.row.original.bukti_bayar}
             large={row.row.original.bukti_bayar}
@@ -193,12 +217,14 @@ console.log(month[0]);
         ) : getDataProduk.length > 0 ? (
           <div className="my-3 table-container table-responsive">
             <Row>
-              <Col lg={3}>
-                <button
-                  onClick={() => DownloadRekapitulasi(tgl, tahun)}
-                  className="btn btn-success ustify-content rounded mb-3">
-                  Laporan Penjualan
-                </button>
+              <Col lg={5}>
+              <Form.Select defaultValue={status} style={{width: 170}} onChange={(e) => setStatus(e.target.value)} aria-label="Default select example">
+                  <option value={''}>Semua</option>
+                  <option value={'0'}>Belum Dikirim</option>
+                  <option value={'1'}>Dikirim</option>
+                  <option value={'2'}>Diterima</option>
+                </Form.Select>
+                
               </Col>
               <Col lg={2}>
                 <Form.Select onChange={(e) => setTgl(e.target.value)} aria-label="Default select example">
@@ -225,6 +251,14 @@ console.log(month[0]);
                   <option value={2024}>2024</option>
                   <option value={2025}>2025</option>
                 </Form.Select>
+              </Col>
+
+              <Col lg={3}>
+              <button
+                  onClick={() => DownloadRekapitulasi(tgl, tahun)}
+                  className="btn btn-success ustify-content rounded mb-3">
+                  Laporan Penjualan
+                </button>
               </Col>
             </Row>
             <table {...getTableProps()}>
