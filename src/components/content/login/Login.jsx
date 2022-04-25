@@ -8,14 +8,18 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
-
+  // const runLogoutTimer = (timer) => {
+  //   setTimeout(() => {
+  //     AuthService.logout();
+  //   }, 60000 - 10000);
+  // };
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       await AuthService.login(username, password).then(
-        () => {
+        (res) => {
           navigate('/dashboard');
-          // window.location.reload();
+          // runLogoutTimer(res.expired_token);
         },
         (error) => {
           Swal.fire({

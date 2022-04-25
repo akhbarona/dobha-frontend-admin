@@ -23,7 +23,7 @@ const Main = () => {
     const user = AuthService.getCurrentUser();
 
     setCurrentUser(user);
-  }, []);
+  }, [currentUser]);
 
   // useEffect(() => {
   //   const timerId = timeout(currentUser.expired_token);
