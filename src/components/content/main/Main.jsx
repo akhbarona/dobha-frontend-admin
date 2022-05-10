@@ -1,20 +1,20 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { Col, Placeholder ,Row} from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import authHeader from "../../services/auth.header";
-import AuthService from "../../services/auth.service";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Col, Placeholder, Row } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import authHeader from '../../services/auth.header';
+import AuthService from '../../services/auth.service';
 const numberWithCommas = (x) => {
-  return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 };
 const Main = () => {
   const [total, setTotal] = useState(null);
   const [pendapatan, setPendapatan] = useState(null);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   useEffect(() => {
     const getTotal = async () => {
       await axios
-        .get(`/api/auth/admin/dashboard-data`, { headers: authHeader() })
+        .get(`${process.env.REACT_APP_API_URL}/api/auth/admin/dashboard-data`, { headers: authHeader() })
         .then((res) => setTotal(res.data))
         .catch((err) => console.log(err));
     };
@@ -36,16 +36,21 @@ const Main = () => {
     const user = AuthService.getCurrentUser();
 
     setCurrentUser(user);
-  }, [currentUser]);
+  }, []);
 
   // useEffect(() => {
-  //   const timerId = timeout(currentUser.expired_token);
-  //   return () => {
-  //     clearTimeout(timerId);
-  //   };
-  // }, []);
+  //   if (currentUser && currentUser.expired_token) {
+  //     console.log(currentUser.expired_token);
+  //     timeout(currentUser.expired_token);
+  //   }
+  // }, [currentUser]);
 
-  console.log("pendapatan", pendapatan);
+  // const timeout = (value) => {
+  //   setTimeout(() => {
+  //     AuthService.Logout();
+  //     navigate('/');
+  //   }, 1000000 - 10000);
+  // };
 
   return (
     <div className="container-fluid height-container">
@@ -92,7 +97,7 @@ const Main = () => {
             </div>
           </div>
         </Col>
-        {currentUser && currentUser.user.username === "superadmin" ? (
+        {currentUser && currentUser.user.username === 'superadmin' ? (
           <Col xl={3} lg={4}>
             <div className="card bg-primary text-center">
               <div className="card-body p-4">
@@ -116,18 +121,21 @@ const Main = () => {
           </Col>
         ) : undefined}
       </div>
-
-      <div className="d-flex mt-5">
-      <Col xl={3} lg={6}>
-          <div className="card bg-success text-center m-3">
+      <div className="row g-4 row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 mt-2">
+        <Col xl={3} lg={4}>
+          <div className="card bg-success text-center">
             <div className="card-body p-4">
               <div className="tile-left">
                 <i className="fa-solid fa-bank fa-3x"></i>
               </div>
               <div className="tile-right">
-                <div className="tile-number">
+                <div className="tile-total">
                   {pendapatan !== null ? (
-                    pendapatan.data.bca?`Rp. ${numberWithCommas(pendapatan.data.bca)}`:'Rp. 0'
+                    pendapatan.data.bca ? (
+                      `Rp. ${numberWithCommas(pendapatan.data.bca)}`
+                    ) : (
+                      'Rp. 0'
+                    )
                   ) : (
                     <Placeholder as="span" animation="glow">
                       <Placeholder xs={7} />
@@ -140,16 +148,20 @@ const Main = () => {
           </div>
         </Col>
 
-        <Col xl={3} lg={6}>
-          <div className="card bg-warning text-center m-3">
+        <Col xl={3} lg={4}>
+          <div className="card bg-warning text-center">
             <div className="card-body p-4">
               <div className="tile-left">
                 <i className="fa-solid fa-wallet fa-3x"></i>
               </div>
               <div className="tile-right">
-                <div className="tile-number">
+                <div className="tile-total">
                   {pendapatan !== null ? (
-                    pendapatan.data.gopay?`Rp. ${numberWithCommas(pendapatan.data.gopay)}`:'Rp. 0'
+                    pendapatan.data.gopay ? (
+                      `Rp. ${numberWithCommas(pendapatan.data.gopay)}`
+                    ) : (
+                      'Rp. 0'
+                    )
                   ) : (
                     <Placeholder as="span" animation="glow">
                       <Placeholder xs={7} />
@@ -162,16 +174,20 @@ const Main = () => {
           </div>
         </Col>
 
-        <Col xl={3} lg={6}>
-          <div className="card bg-primary text-center m-3">
+        <Col xl={3} lg={4}>
+          <div className="card bg-primary text-center">
             <div className="card-body p-4">
               <div className="tile-left">
                 <i className="fa-solid fa-wallet fa-3x"></i>
               </div>
               <div className="tile-right">
-                <div className="tile-number">
+                <div className="tile-total">
                   {pendapatan !== null ? (
-                   pendapatan.data.dana?`Rp. ${numberWithCommas(pendapatan.data.dana)}`: 'Rp .0'
+                    pendapatan.data.dana ? (
+                      `Rp. ${numberWithCommas(pendapatan.data.dana)}`
+                    ) : (
+                      'Rp .0'
+                    )
                   ) : (
                     <Placeholder as="span" animation="glow">
                       <Placeholder xs={7} />
@@ -184,16 +200,20 @@ const Main = () => {
           </div>
         </Col>
 
-        <Col xl={3} lg={6}>
-          <div className="card bg-danger text-center m-3">
+        <Col xl={3} lg={4}>
+          <div className="card bg-danger text-center">
             <div className="card-body p-4">
               <div className="tile-left">
                 <i className="fa-solid fa-calculator fa-3x"></i>
               </div>
               <div className="tile-right">
-                <div className="tile-number">
+                <div className="tile-total">
                   {pendapatan !== null ? (
-                    pendapatan.data.total?`Rp. ${numberWithCommas(pendapatan.data.total)}`:'Rp. 0'
+                    pendapatan.data.total ? (
+                      `Rp. ${numberWithCommas(pendapatan.data.total)}`
+                    ) : (
+                      'Rp. 0'
+                    )
                   ) : (
                     <Placeholder as="span" animation="glow">
                       <Placeholder xs={7} />

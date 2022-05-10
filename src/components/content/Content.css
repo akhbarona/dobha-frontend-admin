@@ -55,6 +55,12 @@
   font-weight: bold;
   color: #fff;
 }
+.card .card-body .tile-right .tile-total {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+}
+
 .card .card-body .tile-right .tile-description {
   font-size: 1.5rem;
   font-weight: 500;

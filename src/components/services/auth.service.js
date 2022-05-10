@@ -1,5 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import authHeader from './auth.header';
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 const login = (username, password) => {
   const data = {
@@ -7,8 +11,9 @@ const login = (username, password) => {
     password: password,
   };
   return axios
-    .post('/api/auth/admin/login', data, {
+    .post(`${API_URL}/api/auth/admin/login`, data, {
       headers: {
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
     })
@@ -31,7 +36,7 @@ const register = (username, password) => {
     password: password,
   };
   return axios
-    .post('/api/auth/admin/register', data, {
+    .post(`${API_URL}/api/auth/admin/register`, data, {
       headers: authHeader(),
     })
     .then((response) => {
@@ -39,17 +44,20 @@ const register = (username, password) => {
     });
 };
 
-const logout = () => {
+const Logout = () => {
   axios
-    .post('/api/auth/admin/logout', {
+    .post(`${API_URL}/api/auth/admin/logout`, {
       headers: authHeader(),
     })
     .then((response) => {
       console.log(response);
+
       sessionStorage.removeItem('user');
+      Swal.fire({ title: 'Sesi telah berakhir, Anda Telah Logout!', icon: 'success' });
     })
     .catch((error) => {
       alert('error', error.response);
+      sessionStorage.removeItem('user');
     });
 };
 
@@ -60,7 +68,7 @@ const postArticle = (title, body, image, cateogry_id) => {
   data.append('image', image);
   data.append('category_id', cateogry_id);
   return axios
-    .post('/api/article/create-new-article', data, {
+    .post(`${API_URL}/api/article/create-new-article`, data, {
       headers: authHeader(),
     })
     .then((response) => {
@@ -76,7 +84,7 @@ const updateArticle = (title, body, image, slug, category_id) => {
   data.append('image', image);
   data.append('category_id', category_id);
   return axios
-    .post(`/api/article/update-article/${slug}`, data, {
+    .post(`${API_URL}/api/article/update-article/${slug}`, data, {
       headers: authHeader(),
     })
     .then((response) => {
@@ -87,7 +95,7 @@ const updateArticle = (title, body, image, slug, category_id) => {
 
 const deleteArticle = (slug) => {
   return axios
-    .post(`/api/article/delete-article/${slug}`, {
+    .post(`${API_URL}/api/article/delete-article/${slug}`, {
       headers: authHeader(),
     })
     .then((response) => {
@@ -106,7 +114,7 @@ const postProduct = (kode_produk, nama_produk, deskripsi_produk, stock_produk, h
   data.append('gambar_produk', gambar_produk);
   data.append('product_category_id', product_category_id);
   return axios
-    .post('/api/product/create-new-product', data, {
+    .post(`${API_URL}/api/product/create-new-product`, data, {
       headers: authHeader(),
     })
     .then((response) => {
@@ -134,7 +142,7 @@ const updateProduct = (kode_produk, nama_produk, deskripsi_produk, stock_produk,
   //   gambar_produk: gambar_produk,
   // };
   return axios
-    .post(`/api/product/update-product/${slug_produk}`, data, {
+    .post(`${API_URL}/api/product/update-product/${slug_produk}`, data, {
       headers: authHeader(),
     })
     .then((response) => {
@@ -145,7 +153,7 @@ const updateProduct = (kode_produk, nama_produk, deskripsi_produk, stock_produk,
 
 const deleteProduct = (slug) => {
   return axios
-    .post(`/api/product/delete-product/${slug}`, {
+    .post(`${API_URL}/api/product/delete-product/${slug}`, {
       headers: authHeader(),
     })
     .then((response) => {
@@ -154,12 +162,13 @@ const deleteProduct = (slug) => {
     });
 };
 
-const updateAdmin = (new_username, username) => {
+const updateAdmin = (new_username, new_password, username) => {
   const data = new FormData();
   data.append('username', new_username);
+  data.append('password', new_password);
 
   return axios
-    .post(`/api/auth/admin/update/${username}`, data, {
+    .post(`${API_URL}/api/auth/admin/update/${username}`, data, {
       headers: authHeader(),
     })
     .then((response) => {
@@ -170,12 +179,12 @@ const updateAdmin = (new_username, username) => {
 
 const deleteAdmin = (username) => {
   return axios
-    .post(`/api/auth/admin/delete/${username}`, {
+    .post(`${API_URL}/api/auth/admin/delete/${username}`, {
       headers: authHeader(),
     })
     .then((response) => {
       console.log(response);
-      return response.data.success;
+      return response.data.message;
     });
 };
 
@@ -187,7 +196,7 @@ const addCategoryProduct = (nama_category) => {
   const data = new FormData();
   data.append('name', nama_category);
   return axios
-    .post(`${process.env.REACT_APP_API_URL}/api/product-category`, data, {
+    .post(`${API_URL}/api/product-category`, data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -199,7 +208,7 @@ const addCategoryProduct = (nama_category) => {
 };
 
 const deleteCategoryProduct = (id) => {
-  return axios.delete(`${process.env.REACT_APP_API_URL}/api/product-category/${id}`).then((response) => {
+  return axios.delete(`${API_URL}/api/product-category/${id}`).then((response) => {
     console.log(response);
     return response.data.status;
   });
@@ -209,7 +218,7 @@ const addCategoryArticle = (nama_category) => {
   const data = new FormData();
   data.append('name', nama_category);
   return axios
-    .post(`${process.env.REACT_APP_API_URL}/api/article-category`, data, {
+    .post(`${API_URL}/api/article-category`, data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -220,7 +229,7 @@ const addCategoryArticle = (nama_category) => {
     });
 };
 const deleteCategoryArticle = (id) => {
-  return axios.delete(`${process.env.REACT_APP_API_URL}/api/article-category/${id}`).then((response) => {
+  return axios.delete(`${API_URL}/api/article-category/${id}`).then((response) => {
     console.log(response);
     return response.data.status;
   });
@@ -228,7 +237,7 @@ const deleteCategoryArticle = (id) => {
 const authService = {
   login,
   register,
-  logout,
+  Logout,
   getCurrentUser,
   postArticle,
   updateArticle,

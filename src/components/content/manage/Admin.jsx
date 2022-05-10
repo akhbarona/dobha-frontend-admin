@@ -130,7 +130,7 @@ const Admin = () => {
       Header: 'Action',
       accessor: 'action',
       Cell: (row) => (
-        <div className="d-flex d-flex justify-content-around">
+        <div className="d-flex justify-content-around">
           <button className="btn w-45 btn-warning" onClick={() => navigate(`/create-admin/${row.row.original.username}`)}>
             Update
           </button>
@@ -170,12 +170,12 @@ const Admin = () => {
           <Form onSubmit={handleAddAdmin}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label className="h5">Username</Form.Label>
-              <Form.Control value={username} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Masukkan Username..." autoComplete="username" />
+              <Form.Control value={username} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Masukkan Username..." autoComplete="username" required />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label className="h5">Password</Form.Label>
-              <Form.Control value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Masukkan Password..." autoComplete="current-password" />
+              <Form.Control value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Masukkan Password..." autoComplete="current-password" required />
             </Form.Group>
 
             <Button variant="primary" type="submit">
@@ -195,11 +195,11 @@ const Admin = () => {
                         <span>
                           {column.isSorted ? (
                             column.isSortedDesc ? (
-                              <svg className="th-align-left" focusable="false" xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                              <svg className="th-align-left bi bi-caret-down-fill" focusable="false" xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" fill="currentColor" viewBox="0 0 16 16">
                                 <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
                               </svg>
                             ) : (
-                              <svg className="th-align-right" focusable="false" xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                              <svg className="th-align-right bi bi-caret-up-fill" focusable="false" xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" fill="currentColor" viewBox="0 0 16 16">
                                 <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
                               </svg>
                             )

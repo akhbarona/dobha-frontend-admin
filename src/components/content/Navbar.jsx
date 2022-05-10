@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 function NavBar(props) {
   const logOut = () => {
-    AuthService.logout();
+    AuthService.Logout();
     // window.location.reload();
   };
   const [currentUser, setCurrentUser] = useState(undefined);

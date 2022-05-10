@@ -10,18 +10,19 @@ const CreateAdmin = () => {
   const { username } = useParams();
   const [isUpdate, setIsUpdate] = useState(false);
   const [Username, setUsername] = useState('');
-  //   const [password, setPassword] = useState('');
+  const [Password, setPassword] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
     if (username) {
       setIsUpdate(true);
       axios
-        .get(`/api/auth/admin/read-admin/${username}`, { headers: authHeader() })
+        .get(`${process.env.REACT_APP_API_URL}/api/auth/admin/read-admin/${username}`, { headers: authHeader() })
         .then((res) => {
           const admin = res.data.admin;
-          //   console.log(res);
+          console.log(res);
           setUsername(admin.username);
+          // setPassword(admin.password);
         })
         .catch((err) => console.log(err));
     } else {
@@ -33,18 +34,18 @@ const CreateAdmin = () => {
     e.preventDefault();
     if (isUpdate) {
       try {
-        await authService.updateAdmin(Username, username).then(
+        await authService.updateAdmin(Username, Password, username).then(
           (res) => {
             console.log(res);
             Swal.fire({
               icon: 'success',
-              title: 'Berhasil update',
+              title: 'Berhasil diupdate',
               showConfirmButton: false,
               timer: 1500,
             });
             navigate('/manage-admin');
             // setLoading(false);
-            // setPassword('');
+            setPassword('');
             setUsername('');
           },
           (error) => {
@@ -76,13 +77,13 @@ const CreateAdmin = () => {
           <Form onSubmit={handleAdmin}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label className="h5">Username</Form.Label>
-              <Form.Control value={Username} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Masukkan Username..." autoComplete="username" />
+              <Form.Control value={Username} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Masukkan Username..." autoComplete="username" required />
             </Form.Group>
-            {/* 
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Masukkan Password..." autoComplete="current-password" />
-          </Form.Group> */}
+
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control value={Password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Masukkan Password..." autoComplete="current-password" required />
+            </Form.Group>
 
             <Button variant="primary" type="submit">
               {isUpdate ? 'Update' : ''}
