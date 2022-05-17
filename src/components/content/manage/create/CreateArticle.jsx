@@ -282,7 +282,7 @@ const CreateArticle = () => {
             <Form.Group className="mb-3" controlId="formBasicImage">
               {imagePreview && (
                 <div className="text-center p-3">
-                  <img className="preview" src={isUpdate ? `https://dobha.000webhostapp.com/${imagePreview}` : `${imagePreview}`} alt="preview" />
+                  <img className="preview" src={imagePreview} alt="preview" />
                 </div>
               )}
               <Form.Label className="h5">Upload Gambar</Form.Label>

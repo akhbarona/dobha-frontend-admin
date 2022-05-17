@@ -31,13 +31,13 @@ const getAllTransaksi = (status) => {
 };
 
 const getAllCategoryProduct = () => {
-  return axios.get(`${API_URL}/api/product-category`).then((response) => {
+  return axios.get(`${API_URL}/api/product-categories`).then((response) => {
     // console.log(response);
     return response.data.data;
   });
 };
 const getAllCategoryArticle = () => {
-  return axios.get(`${API_URL}/api/article-category`).then((response) => {
+  return axios.get(`${API_URL}/api/article-categories`).then((response) => {
     // console.log(response);
     return response.data.data;
   });

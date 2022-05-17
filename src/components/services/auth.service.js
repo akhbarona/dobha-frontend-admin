@@ -196,7 +196,7 @@ const addCategoryProduct = (nama_category) => {
   const data = new FormData();
   data.append('name', nama_category);
   return axios
-    .post(`${API_URL}/api/product-category`, data, {
+    .post(`${API_URL}/api/create-product-category`, data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -206,9 +206,21 @@ const addCategoryProduct = (nama_category) => {
       return response.data.data;
     });
 };
-
+const updateCategoryProduct = (newName, id) => {
+  const data = new FormData();
+  data.append('name', newName);
+  return axios
+    .post(`${API_URL}/api/update-product-category/${id}`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => {
+      return response.data.data;
+    });
+};
 const deleteCategoryProduct = (id) => {
-  return axios.delete(`${API_URL}/api/product-category/${id}`).then((response) => {
+  return axios.post(`${API_URL}/api/delete-product-category/${id}`).then((response) => {
     console.log(response);
     return response.data.status;
   });
@@ -218,7 +230,7 @@ const addCategoryArticle = (nama_category) => {
   const data = new FormData();
   data.append('name', nama_category);
   return axios
-    .post(`${API_URL}/api/article-category`, data, {
+    .post(`${API_URL}/api/create-article-category`, data, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -228,8 +240,22 @@ const addCategoryArticle = (nama_category) => {
       return response.data.data;
     });
 };
+
+const updateCategoryArticle = (newName, id) => {
+  const data = new FormData();
+  data.append('name', newName);
+  return axios
+    .post(`${API_URL}/api/update-article-category/${id}`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => {
+      return response.data.data;
+    });
+};
 const deleteCategoryArticle = (id) => {
-  return axios.delete(`${API_URL}/api/article-category/${id}`).then((response) => {
+  return axios.post(`${API_URL}/api/delete-article-category/${id}`).then((response) => {
     console.log(response);
     return response.data.status;
   });
@@ -251,5 +277,7 @@ const authService = {
   deleteCategoryProduct,
   addCategoryArticle,
   deleteCategoryArticle,
+  updateCategoryProduct,
+  updateCategoryArticle,
 };
 export default authService;
