@@ -87,7 +87,7 @@ const Transaksi = () => {
       ),
     },
     {
-      Header: "Ongir",
+      Header: "Ongkir",
       accessor: "ongkir",
     },
     {
