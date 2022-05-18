@@ -128,7 +128,7 @@ const CategoryArticles = () => {
       accessor: 'action',
       Cell: (row) => (
         <div className="d-flex d-flex justify-content-around">
-          <button disabled className="btn w-45 btn-warning" onClick={() => navigate(`/create-category-product/${row.row.original.username}`)}>
+          <button className="btn w-45 btn-warning" onClick={() => navigate(`/create-category-articles/${row.row.original.id}`)}>
             Update
           </button>
           <button className="btn w-45  btn-danger" onClick={() => handleDelete(row.row.original.id)}>

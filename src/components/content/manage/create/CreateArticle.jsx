@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button, Container, Form, Row } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -29,7 +29,7 @@ const CreateArticle = () => {
       setIsUpdate(true);
       async function getData() {
         await axios
-          .get(`/api/read-article/${slug}`)
+          .get(`${process.env.REACT_APP_API_URL}/api/read-article/${slug}`)
           .then((res) => {
             console.log(res);
             const data = res.data.data;
@@ -106,10 +106,30 @@ const CreateArticle = () => {
             setImage(null);
           },
           (error) => {
+            if (error.response.data.errors.title) {
+              setTitleError(error.response.data.errors.title[0]);
+              titleRef.current.focus();
+            } else {
+              setTitleError('');
+            }
+
+            if (error.response.data.errors.category_id) {
+              setCategoryError(error.response.data.errors.category_id[0]);
+              categoryRef.current.focus();
+            } else {
+              setCategoryError('');
+            }
+            if (error.response.data.errors.body) {
+              setBodyError(error.response.data.errors.body[0]);
+              bodyRef.current.editor.editing.view.focus();
+              window.scrollTo(0, ErrorBody.current.offsetTop);
+            } else {
+              setBodyError('');
+            }
             Swal.fire({
               icon: 'error',
               title: 'Gagal Update',
-              text: `${error}`,
+              text: `periksa kolom error`,
             });
           }
         );
@@ -139,10 +159,31 @@ const CreateArticle = () => {
             setImage(null);
           },
           (error) => {
+            if (error.response.data.errors.title) {
+              setTitleError(error.response.data.errors.title[0]);
+              titleRef.current.focus();
+            } else {
+              setTitleError('');
+            }
+
+            if (error.response.data.errors.category_id) {
+              setCategoryError(error.response.data.errors.category_id[0]);
+              categoryRef.current.focus();
+            } else {
+              setCategoryError('');
+            }
+            if (error.response.data.errors.body) {
+              setBodyError(error.response.data.errors.body[0]);
+              bodyRef.current.editor.editing.view.focus();
+              window.scrollTo(0, ErrorBody.current.offsetTop);
+            } else {
+              setBodyError('');
+            }
+
             Swal.fire({
               icon: 'error',
               title: 'Gagal Menambahkan',
-              text: `${error}`,
+              text: `periksa kolom error`,
             });
           }
         );
@@ -156,6 +197,20 @@ const CreateArticle = () => {
     }
   };
 
+  const [titleError, setTitleError] = useState('');
+
+  const [categoryError, setCategoryError] = useState('');
+
+  const [bodyError, setBodyError] = useState('');
+
+  const [gambarError, setGambarError] = useState('');
+
+  const titleRef = useRef();
+  const categoryRef = useRef();
+  const bodyRef = useRef();
+  const ErrorBody = useRef(null);
+  const gambarRef = useRef();
+
   return (
     <Container fluid>
       <Row>
@@ -168,26 +223,32 @@ const CreateArticle = () => {
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicTitle">
               <Form.Label className="h5">Judul Artikel</Form.Label>
-              <Form.Control name="title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Ketik judul artikel..." required />
+              <Form.Control ref={titleRef} name="title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Ketik judul artikel..." required />
+              {titleError !== '' && <div style={{ fontSize: 12, color: 'red' }}>{titleError}</div>}
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicNamaProduk">
+            <Form.Group className="mb-3" controlId="formBasicCategory">
               <Form.Label className="h5">Kategori Artikel</Form.Label>
-              <Form.Control as="select" value={category} onChange={(e) => setCategory(e.target.value)} aria-label="category">
-                <option value={0} disabled selected>
+              <Form.Control ref={categoryRef} as="select" value={category} onChange={(e) => setCategory(e.target.value)} required>
+                <option value="" hidden>
                   Pilih Kategori Artikel
                 </option>
-                {getAllCategory.map((item, index) => (
-                  <option key={index} value={item.id}>
-                    {item.name}
-                  </option>
-                ))}
+                {getAllCategory.length > 0 &&
+                  getAllCategory.map((item, index) => (
+                    <option key={index} value={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
               </Form.Control>
+              {categoryError !== '' && <div style={{ fontSize: 12, color: 'red' }}>{categoryError}</div>}
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicBody">
-              <Form.Label className="h5">Isi Artikel</Form.Label>
+              <Form.Label className="h5" ref={ErrorBody}>
+                Isi Artikel
+              </Form.Label>
               {/* <Form.Control type="text" value={body} onChange={(e) => setBody(e.target.value)} placeholder="Masukkan isi artikel..." /> */}
-
+              {bodyError !== '' && <div style={{ fontSize: 12, color: 'red' }}>{bodyError}</div>}
               <CKEditor
+                ref={bodyRef}
                 config={{ placeholder: 'Ketik isi artikel...' }}
                 editor={ClassicEditor}
                 data={body}
@@ -221,11 +282,11 @@ const CreateArticle = () => {
             <Form.Group className="mb-3" controlId="formBasicImage">
               {imagePreview && (
                 <div className="text-center p-3">
-                  <img className="preview" src={isUpdate ? `https://dobha.000webhostapp.com/${imagePreview}` : `${imagePreview}`} alt="preview" />
+                  <img className="preview" src={imagePreview} alt="preview" />
                 </div>
               )}
               <Form.Label className="h5">Upload Gambar</Form.Label>
-              <Form.Control name="image" accept="image/*" type="file" onChange={handleImage} />
+              <Form.Control name="image" accept="image/png, image/jpg, image/jpeg" type="file" onChange={handleImage} required />
             </Form.Group>
             <Button variant="primary" type="submit">
               {isUpdate ? 'Update' : 'Submit'}
