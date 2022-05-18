@@ -7,6 +7,7 @@ import axios from 'axios';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import GetService from '../../../services/get.service';
+
 const CreateProduct = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [kodeProduk, setkodeProduk] = useState('');
