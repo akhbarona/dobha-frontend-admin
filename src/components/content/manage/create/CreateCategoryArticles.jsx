@@ -1,17 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-<<<<<<< HEAD
 import { Container, Button, Form, Row } from 'react-bootstrap';
 import axios from 'axios';
 import AuthService from '../../../services/auth.service';
 import Swal from 'sweetalert2';
-=======
-import { Container, Button, Form,Row } from 'react-bootstrap';
-import axios from 'axios';
-import AuthService from '../../../services/auth.service';
-import Swal from 'sweetalert2';
-
->>>>>>> 3e31c899a59971c02b7342eb2ac83be561d5feb8
 const CreateCategoryArticles = () => {
   const { id } = useParams();
 
