@@ -21,6 +21,7 @@ import CategoryArticles from './manage/CategoryArticles';
 import ProtectedRoutes from './ProctectedRoutes';
 import CreateCategoryProducts from './manage/create/CreateCategoryProducts';
 import CreateCategoryArticles from './manage/create/CreateCategoryArticles';
+import CreateMethod from './manage/create/CreateMethod';
 
 function Content(props) {
   const navigate = useNavigate();
@@ -55,9 +56,10 @@ function Content(props) {
           <Route exact path="/manage-products" element={<Products />} />
           <Route exact path="/manage-transaksi" element={<Transaksi />} />
           <Route exact path="/manage-category-products" element={<CategoryProducts />} />
-          <Route exact path="/create-category-products" element={<CreateCategoryProducts />} />
+          <Route exact path="/create-category-products/:id" element={<CreateCategoryProducts />} />
+          <Route exact path="/manage-method" element={<CreateMethod />} />
           <Route exact path="/manage-category-articles" element={<CategoryArticles />} />
-          <Route exact path="/create-category-articles" element={<CreateCategoryArticles />} />
+          <Route exact path="/create-category-articles/:id" element={<CreateCategoryArticles />} />
           <Route exact path="/create-products" element={<CreateProduct />}>
             <Route path=":slug_produk" element={<CreateProduct />} />
           </Route>

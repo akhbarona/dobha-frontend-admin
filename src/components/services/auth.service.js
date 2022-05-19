@@ -18,14 +18,9 @@ const login = (username, password) => {
       },
     })
     .then((response) => {
-      console.log(response);
-      if (response.data.token) {
-        // setTimeout(() => {
-        //   console.log('Token Telah berakhir');
-        //   logout();
-        // }, response.data.expired_token);
-        sessionStorage.setItem('user', JSON.stringify(response.data));
-      }
+      // console.log(response);
+      sessionStorage.setItem('user', JSON.stringify(response.data));
+
       return response.data;
     });
 };
@@ -65,7 +60,9 @@ const postArticle = (title, body, image, cateogry_id) => {
   const data = new FormData();
   data.append('title', title);
   data.append('body', body);
-  data.append('image', image);
+  if (image !== null) {
+    data.append('image', image);
+  }
   data.append('category_id', cateogry_id);
   return axios
     .post(`${API_URL}/api/article/create-new-article`, data, {
@@ -81,7 +78,10 @@ const updateArticle = (title, body, image, slug, category_id) => {
   const data = new FormData();
   data.append('title', title);
   data.append('body', body);
-  data.append('image', image);
+
+  if (image !== null) {
+    data.append('image', image);
+  }
   data.append('category_id', category_id);
   return axios
     .post(`${API_URL}/api/article/update-article/${slug}`, data, {
@@ -111,7 +111,9 @@ const postProduct = (kode_produk, nama_produk, deskripsi_produk, stock_produk, h
   data.append('deskripsi_produk', deskripsi_produk);
   data.append('stock_produk', stock_produk);
   data.append('harga_satuan', harga_satuan);
-  data.append('gambar_produk', gambar_produk);
+  if (gambar_produk !== null) {
+    data.append('gambar_produk', gambar_produk);
+  }
   data.append('product_category_id', product_category_id);
   return axios
     .post(`${API_URL}/api/product/create-new-product`, data, {
@@ -131,7 +133,9 @@ const updateProduct = (kode_produk, nama_produk, deskripsi_produk, stock_produk,
   data.append('deskripsi_produk', deskripsi_produk);
   data.append('stock_produk', stock_produk);
   data.append('harga_satuan', harga_satuan);
-  data.append('gambar_produk', gambar_produk);
+  if (gambar_produk !== null) {
+    data.append('gambar_produk', gambar_produk);
+  }
   data.append('product_category_id', product_category_id);
   // const data = {
   //   kode_produk: kode_produk,

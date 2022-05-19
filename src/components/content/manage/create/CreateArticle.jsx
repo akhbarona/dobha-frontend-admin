@@ -286,7 +286,7 @@ const CreateArticle = () => {
                 </div>
               )}
               <Form.Label className="h5">Upload Gambar</Form.Label>
-              <Form.Control name="image" accept="image/png, image/jpg, image/jpeg" type="file" onChange={handleImage} required />
+              <Form.Control name="image" accept="image/png, image/jpg, image/jpeg" type="file" onChange={handleImage} />
             </Form.Group>
             <Button variant="primary" type="submit">
               {isUpdate ? 'Update' : 'Submit'}

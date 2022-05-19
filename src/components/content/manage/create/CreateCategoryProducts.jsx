@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Container, Button, Form } from 'react-bootstrap';
+import { Container, Button, Form, Row } from 'react-bootstrap';
 import axios from 'axios';
 import AuthService from '../../../services/auth.service';
-
+import Swal from 'sweetalert2';
 const CreateCategoryProducts = () => {
   const { id } = useParams();
 
@@ -23,7 +23,11 @@ const CreateCategoryProducts = () => {
           const data = res.data.data;
           setNamaCategory(data.name);
         })
-        .catch((error) => console.log(error.response));
+        .catch((error) => {
+          if (error.response.status === 404) {
+            navigate('/manage-category-products');
+          }
+        });
     } else {
       navigate('/manage-category-products');
     }

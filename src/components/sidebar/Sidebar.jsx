@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faBox, faBoxArchive, faTimes, faUsers, faNewspaper, faTags } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faBox, faBoxArchive, faTimes, faUsers, faNewspaper, faTags, faCreditCard } from '@fortawesome/free-solid-svg-icons';
 
 import { useEffect, useState } from 'react';
 import { Nav, Button } from 'react-bootstrap';
@@ -53,6 +53,12 @@ function SideBar(props) {
           <Nav.Link as={NavLink} to="/manage-article">
             <FontAwesomeIcon icon={faNewspaper} className="margin-nav-right" />
             Manage Article
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link as={NavLink} to="/manage-method">
+            <FontAwesomeIcon icon={faCreditCard} className="margin-nav-right" />
+            Manage Method
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>

@@ -14,7 +14,8 @@ const CreateProduct = () => {
   const [stockProduk, setstockProduk] = useState('');
   const [hargaSatuan, sethargaSatuan] = useState('');
   const [deskripsi_produk, setDeskripsi_Produk] = useState('');
-  const [gambarProduk, setgambarProduk] = useState('');
+  const [gambarProduk, setgambarProduk] = useState(null);
+  console.log(gambarProduk);
   const [isUpdate, setIsUpdate] = useState(false);
   const [getAllCategory, setGetAllCategory] = useState([]);
   const [category, setCategory] = useState(0);
