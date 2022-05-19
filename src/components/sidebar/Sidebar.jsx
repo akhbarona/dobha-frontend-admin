@@ -58,7 +58,7 @@ function SideBar(props) {
         <Nav.Item>
           <Nav.Link as={NavLink} to="/manage-method">
             <FontAwesomeIcon icon={faCreditCard} className="margin-nav-right" />
-            Manage Method
+            Manage Method Payment
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
