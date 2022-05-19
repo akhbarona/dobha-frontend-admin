@@ -24,16 +24,10 @@ const Transaksi = () => {
   const [tahun , setTahun] = useState('');
   const [loading, setLoading] = useState(true);
   const [status , setStatus] = useState('');
-  // console.log(getDataProduk);
-  let d = new Date((new Date).toLocaleString("en-US", {
-    timeZone: "Asia/Jakarta"
-}));
-let month = d.toLocaleDateString();
+ 
 
   const navigate = useNavigate();
-  useEffect(() => {
-    getProduk();
-  }, [status]);
+ 
 
   const getProduk = () => {
     setLoading(true);
@@ -57,6 +51,10 @@ let month = d.toLocaleDateString();
       }
     );
   };
+
+  useEffect(() => {
+    getProduk();
+  }, [status]);
 
   const COLUMNS = [
     {
@@ -89,7 +87,7 @@ let month = d.toLocaleDateString();
       ),
     },
     {
-      Header: "Ongir",
+      Header: "Ongkir",
       accessor: "ongkir",
     },
     {
